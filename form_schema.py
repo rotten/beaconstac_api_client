@@ -1,10 +1,6 @@
 #!/usr/bin/env python3.10
 
-## Pydantic schema components defining the shape of the forms json.
-
-# todo:  set up some enums for the fields with discrete values
-
-from datetime import datetime
+import datetime
 from typing import Optional, Union
 
 from pydantic import BaseModel
@@ -25,7 +21,8 @@ class FormSettingNotification(BaseModel):
     enabled: bool
     message: str
     subject: str
-    recipients: list[str]
+    recipient: Optional[str]  # if this is anything but an empty string it fails
+    recipients: Optional[list[str]]
 
 
 class FormSettingNotifications(BaseModel):
@@ -161,10 +158,10 @@ class FormStructure(BaseModel):
 
 class Form(BaseModel):
     beacons: list = []
-    created: datetime
+    created: datetime.datetime
     default: bool
     email_structure: dict = {}
-    form_id: Optional[str]
+    form_id: Optional[str]  # appears to be a hash of the `id`
     form_response_count: Optional[int]
     form_structure: FormStructure
     form_type: str  # 'TY'
@@ -176,4 +173,9 @@ class Form(BaseModel):
     threat_active: bool
     title: str
     url: Optional[str]
-    updated: datetime
+    updated: datetime.datetime
+
+    class Config:
+        json_encoders = {
+            datetime: lambda dt: dt.isoformat(),
+        }

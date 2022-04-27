@@ -6,10 +6,10 @@ from random import randint
 from typing import Union
 
 import arrow
+import uuid
 
 from client_data import google_analytics_id, maintainer_email, maintainer_id, organization_id
 
-# Other schemas we might want to use:
 # Action, FormFieldValidation, FormLogic, JumpCondition, JumpDetails, JumpTo, JumpVars, OpinionScaleLabels, OpinionScaleProperties,
 from form_schema import (
     Choice,
@@ -60,13 +60,13 @@ def create_hardcoded_form(return_type: str = 'dictionary') -> Union[dict, str, F
     form_fields = [
         FormField(
             properties=drop_down_properties,
-            ref='test drop down',
+            ref=str(uuid.uuid4()),
             title='drop this down',
             type='dropdown',
         ),
         FormField(
             properties=multiple_choice_properties,
-            ref='test pick one',
+            ref=str(uuid.uuid4()),
             title='multiple choice question',
             type='multiple_choice',
         ),
@@ -76,14 +76,14 @@ def create_hardcoded_form(return_type: str = 'dictionary') -> Union[dict, str, F
         enabled=True,
         message='Your {{form:title}} has a new response\n\n{{form:all_answers}}',
         subject='New response for {{form:title}} ',
-        recipients=[maintainer_email],
+        recipients=['someone@somewhere.tld'],
     )
 
     form_setting_notification_respondent = FormSettingNotification(
         enabled=True,
         message='Hello,\nWe\u2019ve received your submission.\n{{form:all_answers}}\nThank you & have a nice day!',
         subject='Thank you for filling out {{form:title}}',
-        recipients=[maintainer_email],
+        recipient='',
     )
 
     form_setting_notifications = FormSettingNotifications(self=form_setting_notification_self, respondent=form_setting_notification_respondent)
@@ -96,8 +96,8 @@ def create_hardcoded_form(return_type: str = 'dictionary') -> Union[dict, str, F
 
     thank_you_screen_properties = ScreenProperties(
         button_mode='redirect',
-        button_text='Would you like to join the Menstrual Movement?',
-        redirect_url='https://dashboard-beaconstac-21449743.hubspotpagebuilder.com/join-the-menstrual-movement',
+        button_text='Would you like to join us?',
+        redirect_url='https://a/link/to/somwhere',
     )
 
     thank_you_screen = Screen(ref='thankyou-screen', title='Done! We appreciate your feedback.', properties=thank_you_screen_properties)
@@ -106,7 +106,7 @@ def create_hardcoded_form(return_type: str = 'dictionary') -> Union[dict, str, F
         button_text='start it up',
     )
 
-    welcome_screen = Screen(ref='welcome-screen', title='Tell us your feedback!', properties=welcome_screen_properties)
+    welcome_screen = Screen(ref='welcome-screen', title='Give us your feedback!', properties=welcome_screen_properties)
 
     form_structure = FormStructure(
         _links=form_links,
@@ -142,3 +142,8 @@ def create_hardcoded_form(return_type: str = 'dictionary') -> Union[dict, str, F
         return form.json(exclude_unset=True)
     else:
         return form
+
+
+#
+print(create_hardcoded_form(return_type='json'))
+

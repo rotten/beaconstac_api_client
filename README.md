@@ -1,4 +1,4 @@
-Code to help interacting with the Beaconstac Forms API
+Demo Code to help interacting with the Beaconstac Forms API
 
 ----
 
@@ -15,12 +15,5 @@ The python code is written for Python 3.10.
 4.  `create_form.py` loads the hardcoded form into Beaconstac via the API.
 
 5.  The bash scripts, `get_forms.bash` and `get_a_form.bash` use `httpie` to connect to the API and generate a list of forms, or download specific forms.  You will need to install `httpie` to run them.
-
-
-----
-
-### To Do's:
-
-1.  Get the form POST to work.  (currently it returns a 200 and sends back the same list of forms that GET does - and never creates a form)
 
 
