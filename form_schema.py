@@ -1,5 +1,10 @@
 #!/usr/bin/env python3.10
 
+# to-dos:
+#  - enforce the fields that have only a set of discrete values
+#  - enforce UUID's where required
+#
+
 import datetime
 from typing import Optional, Union
 
@@ -87,7 +92,7 @@ class FormFieldValidation(BaseModel):
 class FormField(BaseModel):
     id: Optional[str]
     properties: Union[DropDownProperties, MultipleChoiceProperties, OpinionScaleProperties]
-    ref: str
+    ref: str  # These seem to need to be a UUID - we should probably enforce it in the schema here if that is true
     title: str
     type: str  # 'dropdown', 'multiple_choice', 'opinion_scale', 'long_text', 'statement', 'short_text'
     validations: Optional[FormFieldValidation]
