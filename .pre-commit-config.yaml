@@ -1,0 +1,118 @@
+# copied from overlord's .pre-commit-config.yaml except line length is changed to 150
+repos:
+###############################################################################
+# isort alphabetizes your python imports and groups them
+#
+- repo: https://github.com/pycqa/isort
+  rev: 5.10.1
+  hooks:
+    - id: isort
+      name: isort (python)
+      args:
+        - --check-only
+        - -l=150
+        - --py=310
+        - --profile=black
+        - --skip-glob=spa"
+        - --skip-gitignore
+        - --filter-files
+# If you want to run isort by hand:
+# isort -py 310 -l 150 --profile black myfile.py
+#
+# or:
+# alias is='isort -py 310 -l 150 --profile black '
+# and  then run "is myfile.py"
+# 
+# If the commit fails because isort changed files,
+# you will need to do a `git add` again to pick up those changes before trying to commit again.
+#
+#
+###############################################################################
+# -- doesn't support python 3.10 yet --
+# #
+# blue auto-formats python files for us
+#- repo: https://github.com/grantjenks/blue.git
+#  rev: v0.8.0
+#  hooks:
+#  - id: blue
+#    args:
+#      - -l150
+#      - -tpy39
+# If you want run blue by hand:
+# blue -l150 -tpy39
+# 
+# or:
+# alias bl='blue -l150 -tpy39 '
+# and then run "bl myfile.py" to process a specific file.
+# 
+# If the commit fails because blue changed files,
+# you will want to do a `git add` again to pick up those changes before trying to commit again.
+#
+#
+###############################################################################
+# after blue is done reformatting everything, double check it with flake8
+- repo: https://gitlab.com/pycqa/flake8
+  rev: 3.9.2
+  hooks:
+  - id: flake8
+    args:
+      - --max-line-length=150
+      - --ignore=E265,E266,W503,W504,F811
+# If you want to run flake8 by hand:
+# flake8 --max-line-length=150 --ignore=E266,W503,W504 .
+# #
+# or:
+# alias fl='flake8 --max-line-length=150 --ignore=E266,W503,W504 '
+# and then run "fl myfile.py" to process a specific file.
+# 
+#
+###############################################################################
+# bandit runs security checks on our python
+# 
+- repo: https://github.com/PyCQA/bandit
+  rev: 1.7.4
+  hooks:
+    - id: bandit
+      args:
+        - -v
+        - --skip=B104
+        - -x="./.git"
+        - -ii
+        - -ll
+      files: \.(py|py3|pyc|pyo|pyw|pyx|pyd|pxd|pyi|pyz|pywz|rpy|pyde|pyp|pyt|xpy|ipynb)$
+# if you want to run bandit by hand:
+# bandit --recursive --skip="B104" -ii -ll -x="./.git" .
+# 
+# or:
+# alias bdt='bandit --recursive -v --skip="B104" -ii -ll '
+# and then run "bdt myfile.py" to process a specific file.
+#
+#
+###############################################################################
+# safety makes sure our python dependencies don't have vulnerabilities
+# 
+# The precommit hook runs against any file that you change which has "requirements" in the name.
+#
+- repo: https://github.com/Lucas-C/pre-commit-hooks-safety
+  rev: v1.2.4
+  hooks:
+    -   id: python-safety-dependencies-check
+        files: requirements
+        args: 
+            - --short-report
+# if you want to run safety by hand:
+# safety check -r myrequirementsfile.txt
+#
+###############################################################################
+# lint shell scripts
+-   repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.8.0
+    hooks:
+      - id: shellcheck
+        args: 
+            - --severity=warning
+# if you want to run shellcheck by hand
+# shellcheck --severity=warning myshellscript.sh
+# or
+# shellcheck --severity=warning `find . -name "*.sh" | grep -v node_modules`
+#
