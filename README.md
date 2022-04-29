@@ -1,4 +1,8 @@
-Demo Code to help interacting with the Beaconstac Forms API
+Demo Python Code someone might want to use as a starting point for interacting with the Beaconstac Forms API.
+
+
+It is not a complete application in-and-of itself.  However you can post a dummy form to the API using this code.
+
 
 ----
 
